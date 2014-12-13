@@ -1,16 +1,20 @@
+module.exports = function (app, config) {
+    config = config || {};
 
+    var gpio = require('rpi-gpio');
+    if (gpio.setConfig) {
+        gpio.setConfig(config.gpio);
+    }
 
-module.exports = function(app, config) {
-    var gpio = require('rpi-gpio')(config.gpio);
     var w1 = require('gpio-1wire')(config.w1);
 
-    app.namespace('/api', function() {
+    app.namespace('/api', function () {
 
-        app.namespace('/gpio', function() {
+        app.namespace('/gpio', function () {
 
-            app.get('/:id', function(req, res) {
-                gpio.setup(req.param('id'), gpio.DIR_IN, function() {
-                    gpio.read(req.param('id'), function(err, value) {
+            app.get('/:id', function (req, res) {
+                gpio.setup(req.param('id'), gpio.DIR_IN, function () {
+                    gpio.read(req.param('id'), function (err, value) {
                         if (!err) {
                             res.json({
                                 'value': value
@@ -20,10 +24,10 @@ module.exports = function(app, config) {
                         }
                     });
                 });
-                });
+            });
 
-            app.post('/:id', function(req, res) {
-                gpio.setup(req.param('id'), gpio.DIR_OUT, function() {
+            app.post('/:id', function (req, res) {
+                gpio.setup(req.param('id'), gpio.DIR_OUT, function () {
                     gpio.write(req.param('id'), req.param('value'), function (err, value) {
                         if (!err) {
                             res.json({
@@ -37,9 +41,9 @@ module.exports = function(app, config) {
             });
         });
 
-        app.namespace('/1wire', function() {
+        app.namespace('/1wire', function () {
 
-            app.get('/', function(req, res) {
+            app.get('/', function (req, res) {
                 w1.list(function (err, devices) {
                     if (!err) {
                         res.json({
@@ -51,9 +55,9 @@ module.exports = function(app, config) {
                 });
             });
 
-            app.get('/:id', function(req, res) {
+            app.get('/:id', function (req, res) {
                 w1.read(req.param('id'), req.param('sensor'), function (err, record) {
-                    if ( !err ) {
+                    if (!err) {
                         res.json(record);
                     } else {
                         res.status(400).send(err);

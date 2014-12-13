@@ -12,8 +12,6 @@ app.use(bodyParser.urlencoded({
 app.use("/",express.static(__dirname + '/resources'));
 
 var server = app.listen(process.env.PORT || 8080);
-console.log("Initialized server on port ",8080);
+console.log("Initialized server on port",server.address().port);
 
-var api = require('./api/gpio-api')(app, {
-
-});
+var api = require('./api/gpio-api')(app);
