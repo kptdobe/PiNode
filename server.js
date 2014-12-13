@@ -15,12 +15,5 @@ var server = app.listen(process.env.PORT || 8080);
 console.log("Initialized server on port ",8080);
 
 var api = require('./api/gpio-api')(app, {
-    gpio: {
-        mockPath: '/Users/alex/work/dev/private/gpio-mocker/mocks',
-        mockCreateMissingFolders: true
-    },
-    w1: {
-        mockPath: '/Users/alex/work/dev/private/gpio-mocker/mocks',
-        mockCreateMissingFolders: true
-    }
+
 });
